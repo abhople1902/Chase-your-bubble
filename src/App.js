@@ -2,29 +2,43 @@ import logo from './logo.svg';
 // import './App.css';
 import React, { useState } from 'react';
 
+let globalID = 0
+
 function App() {
 
   const [task, setTask] = useState("")
-  const [todos, setTodos] = useState(["Easing travel for frequent flyers", "Aircraft Exterioir defect API"])
+  const [todos, setTodos] = useState([])
 
-  function createTodo(params) {
+  function createTodo(event) {
+    event.preventDefault()
     setTodos(oldTodos => {
-      return [...oldTodos, task]
+      setTask("")
+      return [...oldTodos, {todo: task, id: globalID++}]
     })
+  }
+
+
+  function deleteItem(itemID){
+    setTodos(oldTodos => oldTodos.filter(item => item.id !== itemID))
   }
 
   return (
     <div className="App">
       <h1>Best To Do app ever</h1>
+      <form onSubmit={createTodo}>
       <input type="text" value={task} onChange={event => {
         setTask(event.target.value)
       }}
       />
-      <button onClick={createTodo}>Create</button>
+      <button type="submit">Create</button>
+      </form>
       <ul>
-        {todos.map(todo => {
-          return <li>{todo}</li>
-          })}
+        {todos.map((item) => {
+          return <div key={item.id}>
+            <li>{item.todo}</li>
+            <button onClick={() => deleteItem(item.id)}>Delete</button>
+          </div>
+        })}
       </ul>
 
     </div>
