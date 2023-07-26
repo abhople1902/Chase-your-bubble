@@ -1,23 +1,32 @@
 import logo from './logo.svg';
-import './App.css';
+// import './App.css';
+import React, { useState } from 'react';
 
 function App() {
+
+  const [task, setTask] = useState("")
+  const [todos, setTodos] = useState(["Easing travel for frequent flyers", "Aircraft Exterioir defect API"])
+
+  function createTodo(params) {
+    setTodos(oldTodos => {
+      return [...oldTodos, task]
+    })
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Best To Do app ever</h1>
+      <input type="text" value={task} onChange={event => {
+        setTask(event.target.value)
+      }}
+      />
+      <button onClick={createTodo}>Create</button>
+      <ul>
+        {todos.map(todo => {
+          return <li>{todo}</li>
+          })}
+      </ul>
+
     </div>
   );
 }
